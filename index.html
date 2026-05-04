@@ -4,92 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FES-PRO App</title>
-    
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0056b3">
-    <meta name="apple-mobile-web-app-capable" content="yes">
     <link rel="apple-touch-icon" href="my-qr.jpg">
-
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         body { background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
-        
         .container { background: #fff; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center; }
         .logo { color: #0056b3; font-size: 26px; font-weight: bold; margin-bottom: 20px; text-transform: uppercase; border-bottom: 2px solid #0056b3; display: inline-block; padding-bottom: 5px; }
-        
         #login-page input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px; outline: none; }
         .btn { width: 100%; padding: 14px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; }
         .btn-blue { background: #0056b3; color: white; }
-        
         .hidden { display: none; }
         .error-msg { color: #dc3545; font-size: 13px; margin-bottom: 10px; display: none; background: #f8d7da; padding: 8px; border-radius: 5px; }
-
         .method-selector { display: flex; gap: 10px; margin: 20px 0; }
         .method { flex: 1; padding: 12px; border: 2px solid #eee; border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: 600; }
         .method.active { border-color: #0056b3; background: #f0f7ff; color: #0056b3; }
-        
         .qr-section img { width: 220px; height: auto; margin: 15px 0; border: 4px solid #0056b3; border-radius: 12px; }
         .whatsapp-btn { display: inline-flex; align-items: center; justify-content: center; margin-top: 20px; color: #25D366; text-decoration: none; font-weight: 600; width: 100%; padding: 10px; border: 1px solid #25D366; border-radius: 8px; }
     </style>
 </head>
 <body>
-
 <div id="login-page" class="container">
     <div class="logo">Premier Bank</div>
     <p style="color: #666; margin-bottom: 20px;">FES-PRO Secure Login</p>
-    
     <div id="error" class="error-msg">User ID ama Password-ka waa khalad!</div>
-    
     <input type="text" id="username" placeholder="User ID">
     <input type="password" id="password" placeholder="Password">
     <button class="btn btn-blue" onclick="checkLogin()">LOG IN</button>
 </div>
-
 <div id="payment-page" class="container hidden">
     <div class="logo" style="font-size: 20px;">FES-PRO PAY</div>
     <p style="font-weight: 600; margin-top: 10px; color: #333;">Mohamed Abdirashid</p>
-    
     <div class="method-selector">
         <div id="m-evc" class="method active" onclick="setMethod('evc')">EVC Plus</div>
         <div id="m-salaam" class="method" onclick="setMethod('salaam')">Salaam Bank</div>
     </div>
-
     <div id="evc-form">
         <input type="number" id="phone" placeholder="Nambarka Mobile-ka" style="width:100%; padding:13px; margin-bottom:10px; border:1px solid #ddd; border-radius:8px;">
         <input type="number" id="amount" placeholder="Lacagta ($ USD)" style="width:100%; padding:13px; margin-bottom:10px; border:1px solid #ddd; border-radius:8px;">
         <button class="btn" style="background:#28a745; color:white;" onclick="payEVC()">BIXI LACAGTA</button>
     </div>
-
     <div id="salaam-form" class="hidden">
         <div class="qr-section">
-            <p style="font-size: 12px; color: #666;">Scan garee QR-ka hoose:</p>
             <img src="my-qr.jpg" alt="QR Code Salaam">
             <p style="font-size: 14px; color: #0056b3; font-weight: bold;">A/C: 38509583</p>
         </div>
     </div>
-
     <a href="https://wa.me/252612028724" class="whatsapp-btn">💬 Caawinaad WhatsApp</a>
-    <p style="font-size: 10px; color: #aaa; margin-top: 15px;">© 2026 Powered by Mohamed Abdi</p>
 </div>
-
 <script>
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js');
-    }
-
+    if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
     function checkLogin() {
         const user = document.getElementById('username').value.trim();
         const pass = document.getElementById('password').value.trim();
-
-        // Xogta Login-ka
         if (user === "admin" && pass === "12345") {
             document.getElementById('login-page').classList.add('hidden');
             document.getElementById('payment-page').classList.remove('hidden');
-        } else {
-            document.getElementById('error').style.display = 'block';
-        }
+        } else { document.getElementById('error').style.display = 'block'; }
     }
-
     function setMethod(m) {
         document.querySelectorAll('.method').forEach(el => el.classList.remove('active'));
         document.getElementById('evc-form').classList.add('hidden');
@@ -102,14 +75,11 @@
             document.getElementById('salaam-form').classList.remove('hidden');
         }
     }
-
     function payEVC() {
         let a = document.getElementById('amount').value;
-        if(a) alert("Codsiga $" + a + " waa la diray. Fadlan geli PIN-ka mobile-kaaga.");
-        else alert("Fadlan geli lacagta aad bixinayso.");
+        if(a) alert("Codsiga $" + a + " waa la diray.");
+        else alert("Fadlan geli lacagta.");
     }
 </script>
-
 </body>
 </html>
-

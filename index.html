@@ -7,6 +7,7 @@
     
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0056b3">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <link rel="apple-touch-icon" href="my-qr.jpg">
 
     <style>
@@ -21,7 +22,7 @@
         .btn-blue { background: #0056b3; color: white; }
         
         .hidden { display: none; }
-        .error-msg { color: red; font-size: 12px; margin-bottom: 10px; display: none; }
+        .error-msg { color: #dc3545; font-size: 13px; margin-bottom: 10px; display: none; background: #f8d7da; padding: 8px; border-radius: 5px; }
 
         .method-selector { display: flex; gap: 10px; margin: 20px 0; }
         .method { flex: 1; padding: 12px; border: 2px solid #eee; border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: 600; }
@@ -37,7 +38,7 @@
     <div class="logo">Premier Bank</div>
     <p style="color: #666; margin-bottom: 20px;">FES-PRO Secure Login</p>
     
-    <div id="error" class="error-msg">User ama Password waa khalad!</div>
+    <div id="error" class="error-msg">User ID ama Password-ka waa khalad!</div>
     
     <input type="text" id="username" placeholder="User ID">
     <input type="password" id="password" placeholder="Password">
@@ -46,7 +47,7 @@
 
 <div id="payment-page" class="container hidden">
     <div class="logo" style="font-size: 20px;">FES-PRO PAY</div>
-    <p style="font-weight: 600; margin-top: 10px;">Mohamed Abdirashid</p>
+    <p style="font-weight: 600; margin-top: 10px; color: #333;">Mohamed Abdirashid</p>
     
     <div class="method-selector">
         <div id="m-evc" class="method active" onclick="setMethod('evc')">EVC Plus</div>
@@ -54,19 +55,21 @@
     </div>
 
     <div id="evc-form">
-        <input type="number" id="phone" placeholder="612028724" style="width:100%; padding:13px; margin-bottom:10px; border:1px solid #ddd; border-radius:8px;">
-        <input type="number" id="amount" placeholder="Lacagta ($)" style="width:100%; padding:13px; margin-bottom:10px; border:1px solid #ddd; border-radius:8px;">
-        <button class="btn" style="background:#28a745; color:white;" onclick="payEVC()">BIXI HADDA</button>
+        <input type="number" id="phone" placeholder="Nambarka Mobile-ka" style="width:100%; padding:13px; margin-bottom:10px; border:1px solid #ddd; border-radius:8px;">
+        <input type="number" id="amount" placeholder="Lacagta ($ USD)" style="width:100%; padding:13px; margin-bottom:10px; border:1px solid #ddd; border-radius:8px;">
+        <button class="btn" style="background:#28a745; color:white;" onclick="payEVC()">BIXI LACAGTA</button>
     </div>
 
     <div id="salaam-form" class="hidden">
         <div class="qr-section">
+            <p style="font-size: 12px; color: #666;">Scan garee QR-ka hoose:</p>
             <img src="my-qr.jpg" alt="QR Code Salaam">
-            <p style="font-size: 13px;">A/C: <strong>38509583</strong></p>
+            <p style="font-size: 14px; color: #0056b3; font-weight: bold;">A/C: 38509583</p>
         </div>
     </div>
 
     <a href="https://wa.me/252612028724" class="whatsapp-btn">💬 Caawinaad WhatsApp</a>
+    <p style="font-size: 10px; color: #aaa; margin-top: 15px;">© 2026 Powered by Mohamed Abdi</p>
 </div>
 
 <script>
@@ -75,10 +78,10 @@
     }
 
     function checkLogin() {
-        const user = document.getElementById('username').value;
-        const pass = document.getElementById('password').value;
+        const user = document.getElementById('username').value.trim();
+        const pass = document.getElementById('password').value.trim();
 
-        // HALKAN KA BEDDEL USER-KA IYO PASSWORD-KA
+        // Xogta Login-ka
         if (user === "admin" && pass === "12345") {
             document.getElementById('login-page').classList.add('hidden');
             document.getElementById('payment-page').classList.remove('hidden');
@@ -102,10 +105,11 @@
 
     function payEVC() {
         let a = document.getElementById('amount').value;
-        if(a) alert("Codsiga $" + a + " waa la diray.");
-        else alert("Fadlan geli lacagta.");
+        if(a) alert("Codsiga $" + a + " waa la diray. Fadlan geli PIN-ka mobile-kaaga.");
+        else alert("Fadlan geli lacagta aad bixinayso.");
     }
 </script>
 
 </body>
 </html>
+

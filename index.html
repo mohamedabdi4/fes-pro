@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FES GLOBAL PRO | Live Scores</title>
+    <title>FES GLOBAL PRO | Login & Live Scores</title>
     <style>
         :root {
             --bg: #050505; --surface: #121212; --primary: #0052ad;
@@ -12,144 +12,34 @@
 
         body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 80px; overflow-x: hidden; }
 
-        /* Welcome Modal */
-        #welcome-modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); display: none; justify-content: center;
-            align-items: center; z-index: 10000; padding: 20px; box-sizing: border-box;
+        /* Auth Pages Styling */
+        .auth-container {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 100vh; padding: 20px; text-align: center;
         }
-        .modal-content {
-            background: var(--surface); padding: 30px; border-radius: 25px;
-            text-align: center; border: 1px solid var(--primary); max-width: 400px;
+        .auth-card {
+            background: var(--surface); padding: 30px; border-radius: 20px;
+            border: 1px solid #333; width: 100%; max-width: 350px;
         }
-        .modal-btn {
-            background: var(--primary); color: white; border: none;
-            padding: 14px 35px; border-radius: 12px; margin-top: 20px; font-weight: bold; font-size: 16px; cursor: pointer;
+        .auth-input {
+            width: 100%; padding: 14px; margin: 10px 0; border-radius: 10px;
+            border: 1px solid #444; background: #1a1a1a; color: white; box-sizing: border-box;
         }
+        .auth-btn {
+            width: 100%; padding: 14px; background: var(--primary); color: white;
+            border: none; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 10px;
+        }
+        .toggle-link { color: var(--primary); cursor: pointer; margin-top: 15px; display: block; font-size: 14px; }
 
-        /* Header */
+        /* Main App Header & Content */
+        #main-app { display: none; }
         .header { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; background: var(--surface); border-bottom: 1px solid #222; position: sticky; top: 0; z-index: 100; }
-        .search-container { padding: 12px 15px; background: var(--bg); position: sticky; top: 60px; z-index: 99; }
-        .search-input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #333; background: #1a1a1a; color: white; box-sizing: border-box; outline: none; }
-
-        /* Match Cards */
         .match-card { background: var(--surface); margin: 12px; padding: 15px; border-radius: 15px; border: 1px solid #222; }
         .team-row { display: flex; justify-content: space-between; align-items: center; margin: 8px 0; }
-        .team-info { display: flex; align-items: center; font-size: 14px; }
-        .team-logo { width: 22px; height: 22px; object-fit: contain; margin-right: 12px; }
         .score { font-size: 18px; font-weight: 800; color: var(--primary); }
-
-        /* Ads Space */
-        .ads-box { background: #1f2937; padding: 10px; border-radius: 8px; margin: 10px 12px; text-align: center; border: 1px dashed var(--primary); color: var(--text-dim); font-size: 11px; }
-
-        /* Nav Bar */
         .nav-bar { position: fixed; bottom: 0; width: 100%; background: var(--surface); display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #333; }
-        .nav-item { color: var(--text-dim); font-size: 11px; text-align: center; text-decoration: none; }
-        .nav-item.active { color: var(--primary); }
     </style>
 </head>
 <body>
 
-    <div id="welcome-modal">
-        <div class="modal-content">
-            <div style="font-size: 50px; margin-bottom: 15px;">⚽</div>
-            <h2 id="welcome-title">FES GLOBAL PRO</h2>
-            <p id="welcome-text" style="color: var(--text-dim); line-height: 1.6;"></p>
-            <button class="modal-btn" onclick="closeWelcome()">BILOW HADDA</button>
-        </div>
-    </div>
-
-    <header class="header">
-        <div style="font-weight: 900; letter-spacing: 2px; font-size: 20px;">FES <span style="color:var(--primary)">PRO</span></div>
-        <div style="background: var(--gold); color: black; font-size: 10px; padding: 5px 12px; border-radius: 20px; font-weight: 900;">VIP</div>
-    </header>
-
-    <div class="search-container">
-        <input type="text" id="searchBar" class="search-input" placeholder="Raadi kooxdaada..." onkeyup="searchLogic()">
-    </div>
-
-    <div class="ads-box">XAYEYSIIS (ADS SPACE) - Google AdSense</div>
-
-    <div id="live-matches">
-        <p style="text-align:center; padding:50px; color:var(--text-dim);">Loading Secure Data...</p>
-    </div>
-
-    <nav class="nav-bar">
-        <a class="nav-item active">⚽<br>Scores</a>
-        <a class="nav-item">🔥<br>News</a>
-        <a class="nav-item">👤<br>Profile</a>
-    </nav>
-
-    <script>
-        const messages = {
-            so: { title: "Ku soo dhowow FES PRO!", text: "Natiijooyinka tooska ah iyo wararkii ugu dambeeyay ciyaaraha gacantaada ku hay.", btn: "BILOW HADDA" },
-            en: { title: "Welcome to FES PRO!", text: "Get live scores and real-time football updates instantly.", btn: "START NOW" }
-        };
-
-        function initApp() {
-            const lang = navigator.language.includes('so') ? 'so' : 'en';
-            const msg = messages[lang];
-            document.getElementById('welcome-title').innerText = msg.title;
-            document.getElementById('welcome-text').innerText = msg.text;
-            document.querySelector('.modal-btn').innerText = msg.btn;
-            if (!localStorage.getItem('fVisited')) document.getElementById('welcome-modal').style.display = 'flex';
-            fetchData();
-        }
-
-        function closeWelcome() {
-            document.getElementById('welcome-modal').style.display = 'none';
-            localStorage.setItem('fVisited', 'true');
-        }
-
-        const _k = "fba7f33dfce6edbf264c2e0d86395d59"; 
-        let allMatches = [];
-
-        async function fetchData() {
-            try {
-                const r = await fetch("https://v3.football.api-sports.io/fixtures?live=all", {headers:{"x-apisports-key":_k}});
-                const d = await r.json();
-                if(d.response) {
-                    allMatches = d.response;
-                    renderMatches(allMatches);
-                }
-            } catch(e) { 
-                document.getElementById('live-matches').innerHTML = "<p style='text-align:center; padding:30px;'>Xogta lama heli karo...</p>";
-            }
-        }
-
-        function renderMatches(matches) {
-            const container = document.getElementById('live-matches');
-            if(matches.length > 0) {
-                container.innerHTML = matches.map(m => `
-                    <div class="match-card">
-                        <div style="font-size:10px; color:var(--text-dim); margin-bottom:8px;">${m.league.name}</div>
-                        <div class="team-row">
-                            <div class="team-info"><img src="${m.teams.home.logo}" class="team-logo">${m.teams.home.name}</div>
-                            <div class="score">${m.goals.home}</div>
-                        </div>
-                        <div class="team-row">
-                            <div class="team-info"><img src="${m.teams.away.logo}" class="team-logo">${m.teams.away.name}</div>
-                            <div class="score">${m.goals.away}</div>
-                        </div>
-                        <div style="color:var(--live); font-size:11px; text-align:center; margin-top:10px; font-weight:bold;">● LIVE ${m.fixture.status.elapsed}'</div>
-                    </div>
-                `).join('');
-            } else {
-                container.innerHTML = "<p style='text-align:center; padding:30px; color:var(--text-dim);'>Ma jiraan ciyaaro hadda socda.</p>";
-            }
-        }
-
-        function searchLogic() {
-            const query = document.getElementById('searchBar').value.toLowerCase();
-            const filtered = allMatches.filter(m => 
-                m.teams.home.name.toLowerCase().includes(query) || 
-                m.teams.away.name.toLowerCase().includes(query)
-            );
-            renderMatches(filtered);
-        }
-
-        window.onload = initApp;
-        setInterval(fetchData, 60000);
-    </script>
-</body>
-</html>
+    <div id="auth-section" class="auth

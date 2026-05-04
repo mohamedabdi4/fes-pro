@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="so">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Football Explorer Somalia</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1a1a1a">
+    <link rel="apple-touch-icon" href="my-qr.jpg">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { 
+            background: linear-gradient(135deg, #1a1a1a 0%, #0d1117 100%); 
+            display: flex; justify-content: center; align-items: center; 
+            min-height: 100vh; padding: 20px; color: white;
+        }
+        
+        .container { 
+            background: #21262d; padding: 30px; border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 100%; 
+            max-width: 400px; text-align: center; border: 1px solid #30363d;
+        }
+        
+        .logo { 
+            color: #58a6ff; font-size: 24px; font-weight: bold; 
+            margin-bottom: 10px; text-transform: uppercase; 
+            letter-spacing: 1px;
+        }
+
+        .sub-text { color: #8b949e; font-size: 14px; margin-bottom: 25px; }
+        
+        input { 
+            width: 100%; padding: 14px; margin-bottom: 15px; 
+            border: 1px solid #30363d; border-radius: 10px; 
+            outline: none; background: #0d1117; color: white;
+        }
+
+        .btn { 
+            width: 100%; padding: 14px; border: none; border-radius: 10px; 
+            font-weight: bold; cursor: pointer; transition: 0.3s;
+            background: #238636; color: white; font-size: 16px;
+        }
+
+        .btn:hover { background: #2ea043; }
+        
+        .hidden { display: none; }
+        .error-msg { 
+            color: #f85149; font-size: 13px; margin-bottom: 15px; 
+            display: none; background: rgba(248, 81, 73, 0.1); 
+            padding: 10px; border-radius: 8px; border: 1px solid rgba(248, 81, 73, 0.4);
+        }
+
+        /* Payment/App Page Styles */
+        .method-selector { display: flex; gap: 10px; margin: 20px 0; }
+        .method { 
+            flex: 1; padding: 12px; border: 1px solid #30363d; 
+            border-radius: 10px; cursor: pointer; font-size: 13px; 
+            background: #161b22; transition: 0.3s;
+        }
+        .method.active { border-color: #58a6ff; background: #1f6feb; }
+        
+        .qr-section img { 
+            width: 220px; height: auto; margin: 15px 0; 
+            border: 4px solid #1f6feb; border-radius: 15px;
+        }
+
+        .whatsapp-btn { 
+            display: inline-flex; align-items: center; justify-content: center; 
+            margin-top: 20px; color: #3fb950; text-decoration: none; 
+            font-weight: 600; width: 100%; padding: 12px; 
+            border: 1px solid #3fb950; border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="login-page" class="container">
+    <div class="logo">FOOTBALL EXPLORER</div>
+    <p class="sub-text">Soomaaliya 🇸🇴 | Member Login</p>
+    
+    <div id="error" class="error-msg">Aqoonsigaagu waa khaldan yahay!</div>
+    
+    <input type="text" id="username" placeholder="Username (admin)">
+    <input type="password" id="password" placeholder="Password (12345)">
+    <button class="btn" onclick="checkLogin()">GAL APP-KA</button>
+</div>
+
+<div id="payment-page" class="container hidden">
+    <div class="logo" style="font-size: 20px;">FES-PRO DASHBOARD</div>
+    <p style="color: #58a6ff; font-weight: 600;">Maxamed Cabdi Project</p>
+    
+    <div class="method-selector">
+        <div id="m-evc" class="method active" onclick="setMethod('evc')">EVC Plus</div>
+        <div id="m-salaam" class="method" onclick="setMethod('salaam')">Salaam Bank</div>
+    </div>
+
+    <div id="evc-form">
+        <input type="number" id="phone" placeholder="Nambarkaaga">
+        <input type="number" id="amount" placeholder="Lacagta ($)">
+        <button class="btn" onclick="payEVC()">DIR LACAGTA</button>
+    </div>
+
+    <div id="salaam-form" class="hidden">
+        <div class="qr-section">
+            <p style="font-size: 12px; color: #8b949e;">Scan-garee si aad u bixiso:</p>
+            <img src="my-qr.jpg" alt="QR Code">
+            <p style="font-size: 14px; font-weight: bold; color: #58a6ff;">A/C: 38509583</p>
+        </div>
+    </div>
+
+    <a href="https://wa.me/252612028724" class="whatsapp-btn">💬 Nagala soo xiriir WhatsApp</a>
+    <p style="font-size: 10px; color: #8b949e; margin-top: 20px;">© 2026 Football Explorer Somalia</p>
+</div>
+
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js');
+    }
+
+    function checkLogin() {
+        const user = document.getElementById('username').value.trim();
+        const pass = document.getElementById('password').value.trim();
+
+        if (user === "admin" && pass === "12345") {
+            document.getElementById('login-page').classList.add('hidden');
+            document.getElementById('payment-page').classList.remove('hidden');
+        } else {
+            document.getElementById('error').style.display = 'block';
+        }
+    }
+
+    function setMethod(m) {
+        document.querySelectorAll('.method').forEach(el => el.classList.remove('active'));
+        document.getElementById('evc-form').classList.add('hidden');
+        document.getElementById('salaam-form').classList.add('hidden');
+        if(m === 'evc') {
+            document.getElementById('m-evc').classList.add('active');
+            document.getElementById('evc-form').classList.remove('hidden');
+        } else {
+            document.getElementById('m-salaam').classList.add('active');
+            document.getElementById('salaam-form').classList.remove('hidden');
+        }
+    }
+
+    function payEVC() {
+        let a = document.getElementById('amount').value;
+        if(a) alert("Codsiga $" + a + " waa la diray.");
+        else alert("Fadlan geli lacagta.");
+    }
+</script>
+
+</body>
+</html>
+

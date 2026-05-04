@@ -1,94 +1,10 @@
-<!DOCTYPE html>
-<html lang="so">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premier Online - FES-PRO</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
-        
-        .container { background: #fff; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center; }
-        .logo { color: #0056b3; font-size: 26px; font-weight: bold; margin-bottom: 20px; text-transform: uppercase; }
-        
-        /* Login Page Styles */
-        #login-page input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px; }
-        .btn { width: 100%; padding: 14px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .btn-blue { background: #0056b3; color: white; }
-        
-        /* Payment Page Styles */
-        .hidden { display: none; }
-        .method-selector { display: flex; gap: 10px; margin: 20px 0; }
-        .method { flex: 1; padding: 10px; border: 2px solid #eee; border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: 600; }
-        .method.active { border-color: #0056b3; background: #f0f7ff; }
-        .qr-section img { width: 180px; height: 180px; margin: 15px 0; border: 5px solid #0056b3; border-radius: 10px; }
-        
-        .whatsapp-btn { display: block; margin-top: 15px; color: #25D366; text-decoration: none; font-weight: 600; font-size: 14px; }
-    </style>
-</head>
-<body>
+<link rel="apple-touch-icon" href="my-qr.jpg">
 
-<div id="login-page" class="container">
-    <div class="logo">Premier Bank</div>
-    <p style="color: #666; margin-bottom: 20px;">Geli aqoonsigaaga si aad u sii wadid</p>
-    <input type="text" placeholder="User ID">
-    <input type="password" placeholder="Password">
-    <button class="btn btn-blue" onclick="showPayment()">Log In</button>
+<div id="salaam-form" class="hidden">
+    <div class="qr-section">
+        <p style="font-size: 12px; color: #666;">Scan garee QR Code-ka hoose:</p>
+        <img src="my-qr.jpg" alt="QR Code Salaam">
+        <p style="font-size: 13px;">A/C: <strong>38509583</strong></p>
+    </div>
 </div>
 
-<div id="payment-page" class="container hidden">
-    <div class="logo">FES-PRO Pay</div>
-    <p>Dooro habka aad lacagta ugu dirayso <strong>Mohamed</strong></p>
-    
-    <div class="method-selector">
-        <div id="m-evc" class="method active" onclick="setMethod('evc')">EVC Plus</div>
-        <div id="m-salaam" class="method" onclick="setMethod('salaam')">Salaam (QR)</div>
-    </div>
-
-    <div id="evc-form">
-        <input type="number" id="phone" placeholder="612028724" style="width:100%; padding:12px; margin-bottom:10px; border:1px solid #ddd; border-radius:8px;">
-        <input type="number" id="amount" placeholder="Lacagta ($)" style="width:100%; padding:12px; margin-bottom:10px; border:1px solid #ddd; border-radius:8px;">
-        <button class="btn" style="background:#28a745; color:white;" onclick="payEVC()">Bixi Hadda</button>
-    </div>
-
-    <div id="salaam-form" class="hidden">
-        <div class="qr-section">
-            <p style="font-size: 12px; color: #555;">Scan garee QR Code-ka hoose si aad lacagta u soo dirtid:</p>
-            <img src="my-qr.jpg" alt="QR Code Salaam">
-            <p style="font-weight: bold; color: #0056b3;">A/C: 38509583</p>
-        </div>
-    </div>
-
-    <a href="https://wa.me/252612028724" class="whatsapp-btn">📞 Caawinaad WhatsApp</a>
-</div>
-
-<script>
-    function showPayment() {
-        document.getElementById('login-page').classList.add('hidden');
-        document.getElementById('payment-page').classList.remove('hidden');
-    }
-
-    function setMethod(m) {
-        document.querySelectorAll('.method').forEach(el => el.classList.remove('active'));
-        document.getElementById('evc-form').classList.add('hidden');
-        document.getElementById('salaam-form').classList.add('hidden');
-        
-        if(m === 'evc') {
-            document.getElementById('m-evc').classList.add('active');
-            document.getElementById('evc-form').classList.remove('hidden');
-        } else {
-            document.getElementById('m-salaam').classList.add('active');
-            document.getElementById('salaam-form').classList.remove('hidden');
-        }
-    }
-
-    function payEVC() {
-        let p = document.getElementById('phone').value;
-        let a = document.getElementById('amount').value;
-        if(p && a) alert("Codsiga $" + a + " waa loo diray " + p + ". Geli PIN-kaaga.");
-        else alert("Fadlan buuxi meelaha banaan.");
-    }
-</script>
-
-</body>
-</html>
